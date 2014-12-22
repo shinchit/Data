@@ -49,7 +49,7 @@ Perhaps a little code snippet.
     # 20
     # 37
     #  3  <= 1st value is displayed
-    # 15     eternal roop
+    # 15     eternal loop
     ...
     
     # rotate display
@@ -89,7 +89,7 @@ Perhaps a little code snippet.
     # takahiro
     # steeve
     # hisashi  <= 1st value is displayed
-    # jane        eternal roop
+    # jane        eternal loop
     ...
 
     # display
