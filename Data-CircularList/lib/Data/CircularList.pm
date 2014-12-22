@@ -1,17 +1,17 @@
-package DataStructure::CircularList;
+package Data::CircularList;
 
 use 5.006;
 use strict;
 use warnings FATAL => 'all';
-use DataStructure::CircularList::Cell;
-use DataStructure::CircularList::Iterator;
+use Data::CircularList::Cell;
+use Data::CircularList::Iterator;
 use parent qw/Class::Accessor/;
 __PACKAGE__->mk_accessors(qw/header/);
 use Scalar::Util qw/blessed/;
 
 =head1 NAME
 
-DataStructure::CircularList - simple implementation for using CircularList data structure.
+Data::CircularList - simple implementation for using CircularList data structure.
 
 =head1 VERSION
 
@@ -28,9 +28,9 @@ Quick summary of what the module does.
 
 Perhaps a little code snippet.
 
-    use DataStructure::CircularList;
+    use Data::CircularList;
 
-    my $list = new DataStructure::CircularList;
+    my $list = new Data::CircularList;
     $list->insert(20);
     $list->insert(15);
     $list->insert(18);
@@ -70,7 +70,7 @@ Perhaps a little code snippet.
     # 37 <= end. $iter->has_next return true until second rotation completed.
     
     # you can also use strings as cells
-    $list = new DataStructure::CircularList;
+    $list = new Data::CircularList;
     $list->insert('steeve');
     $list->insert('hisashi');
     $list->insert('takairo');
@@ -110,7 +110,7 @@ Perhaps a little code snippet.
     # steeve <= end. $iter->has_next return true until second rotation completed.
 
     # you can also use some object as cells
-    $list = new DataStructure::CircularList;
+    $list = new Data::CircularList;
     $list->insert(new Person(name => 'lally'));
     $list->insert(new Person(name => 'hisashi'));
     $list->insert(new Person(name => 'takairo'));
@@ -148,7 +148,7 @@ constructor. Any arguments don't require.
 
 sub new {
     my ($class, %self) = @_;
-    $self{'header'} = new DataStructure::CircularList::Cell("!!Circular List Header!");
+    $self{'header'} = new Data::CircularList::Cell("!!Circular List Header!");
     $self{'header'}->next($self{'header'});
     bless \%self => $class;
     return \%self;
@@ -163,7 +163,7 @@ You can see SYNOPSIS as a example.
 
 sub insert {
     my $self = shift;
-    my $cell = new DataStructure::CircularList::Cell(shift);
+    my $cell = new Data::CircularList::Cell(shift);
 
     my $p = $self->header->next;
     my $q = $self->header;
@@ -176,7 +176,7 @@ sub insert {
         }
     }
 
-    my $new_cell = new DataStructure::CircularList::Cell($cell);
+    my $new_cell = new Data::CircularList::Cell($cell);
     $new_cell->next($p);
     $q->next($new_cell);
 }
@@ -192,7 +192,7 @@ sub iterator {
     my $self = shift;
     my %args = @_;
     my $rotate = defined $args{'rotate'} ? $args{'rotate'} : undef;
-    my $iter = DataStructure::CircularList::Iterator->new($self, $rotate);
+    my $iter = Data::CircularList::Iterator->new($self, $rotate);
     return $iter;
 }
 
@@ -203,7 +203,7 @@ shinchit, C<< <shinchi.xx at gmail.com> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-datastructure-circularlist at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=DataStructure-CircularList>.  I will be notified, and then you'll
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-CircularList>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -213,7 +213,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc DataStructure::CircularList
+    perldoc Data::CircularList
 
 
 You can also look for information at:
@@ -222,19 +222,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=DataStructure-CircularList>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Data-CircularList>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/DataStructure-CircularList>
+L<http://annocpan.org/dist/Data-CircularList>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/DataStructure-CircularList>
+L<http://cpanratings.perl.org/d/Data-CircularList>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/DataStructure-CircularList/>
+L<http://search.cpan.org/dist/Data-CircularList/>
 
 =back
 
@@ -285,4 +285,4 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
-1; # End of DataStructure::CircularList
+1; # End of Data::CircularList

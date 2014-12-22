@@ -1,8 +1,8 @@
 Build.PL
 Changes
-lib/DataStructure/CircularList.pm
-lib/DataStructure/CircularList/Cell.pm
-lib/DataStructure/CircularList/Iterator.pm
+lib/Data/CircularList.pm
+lib/Data/CircularList/Cell.pm
+lib/Data/CircularList/Iterator.pm
 Makefile.PL
 MANIFEST			This list of files
 README

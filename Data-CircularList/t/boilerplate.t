@@ -50,7 +50,7 @@ TODO: {
     "placeholder date/time"       => qr(Date/time)
   );
 
-  module_boilerplate_ok('lib/DataStructure/CircularList.pm');
+  module_boilerplate_ok('lib/Data/CircularList.pm');
 
 
 }

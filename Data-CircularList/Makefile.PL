@@ -4,10 +4,10 @@ use warnings FATAL => 'all';
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME             => 'DataStructure::CircularList',
+    NAME             => 'Data::CircularList',
     AUTHOR           => q{shinchit <shinchi.xx@gmail.com>},
-    VERSION_FROM     => 'lib/DataStructure/CircularList.pm',
-    ABSTRACT_FROM    => 'lib/DataStructure/CircularList.pm',
+    VERSION_FROM     => 'lib/Data/CircularList.pm',
+    ABSTRACT_FROM    => 'lib/Data/CircularList.pm',
     LICENSE          => 'Artistic_2_0',
     PL_FILES         => {},
     MIN_PERL_VERSION => 5.006,
@@ -22,5 +22,5 @@ WriteMakefile(
         #'Foo::Bar::Module' => 5.0401,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean => { FILES => 'DataStructure-CircularList-*' },
+    clean => { FILES => 'Data-CircularList-*' },
 );

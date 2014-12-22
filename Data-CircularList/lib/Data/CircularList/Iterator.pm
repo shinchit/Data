@@ -1,16 +1,15 @@
-package DataStructure::CircularList::Cell;
+package Data::CircularList::Iterator;
 
 use 5.006;
 use strict;
 use warnings FATAL => 'all';
 use parent qw/Class::Accessor/;
-__PACKAGE__->mk_accessors(qw/next data/);
-use Scalar::Util qw/blessed looks_like_number/;
-use Carp;
+__PACKAGE__->mk_accessors(qw/p header rotate rotate_count/);
+use Scalar::Util qw/blessed/;
 
 =head1 NAME
 
-DataStructure::CircularList::Cell - a Cell of the CircularList.
+Data::CircularList::Iterator - iterator for Data::CircularList's object.
 
 =head1 VERSION
 
@@ -20,84 +19,90 @@ Version 0.01
 
 our $VERSION = '0.01';
 
-
 =head1 SYNOPSIS
 
-You can see DataStructure::CircularList module's SYNOPSIS as a example.
+You can see Data::CircularList module's SYNOPSIS as a example.
+
+=cut
 
 =head1 SUBROUTINES/METHODS
 
 =head2 new
 
-constructor. reguire one argument (not necessary) as data.
+constructor. reguire one argument (not necessary) as rotate.
 
 =cut
 
 sub new {
-    my $class = shift;
-    my $next = undef;
-    my $data = shift;
-    bless { next => $next, data => $data }, $class;
+    my ($class, $circular_list, $rotate) = @_;
+    my $self = {
+        p => $circular_list->header,
+        header => $circular_list->header,
+        rotate => defined $rotate ? $rotate : undef,
+        rotate_count => 0,
+    };
+    bless $self => $class;
+    return $self;
 }
 
-=head2 data
+=head2 has_next
 
-accessor for data.
-data method is readble and writable as below.
-thid method is provided by Class::Accessor.
-
-    $self->data;  # read
-    $self->data('some data') # write
+return boolean value(1 or 0).
+If the linkedList has next cell, this method return 1.
+If the linkedList has not next cell, this method return 0.
 
 =cut
+
+sub has_next {
+    my $self = shift;
+
+    # if rotate is not defined, return true eternary.
+    return 1 if (!defined($self->rotate));
+
+    if ( ! blessed($self->p->next->data) ) {
+            $self->rotate_count($self->rotate_count + 1);
+    }
+
+    # case of the rotate is defined
+    if ( $self->rotate_count < $self->rotate ) {
+        # skip header
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 =head2 next
 
-accessor for next cell of the CircularList.
-next method is readble and writable as below.
-thid method is provided by Class::Accessor.
+return next cell(Data::CircularList::Cell) of the CircularList.
 
-    $self->next;  # read
-    $self->next($next_cell) # write
+=head3 caution
 
-a user doesn't usually use this method directly.
+If next method called, iterator progresses next cell.
+So you should generally call has_next method and next method alternately each once respectively.
 
-=cut
-
-=head2 compare_to
-
-This method compares to value of self and it by argument.
-If self value is big, this method return 1 and if it isn't so return 0.
-Each cell is lined in the sorted state at the value in DataStructure::CircularList. it's used for the sorting.
-You can use any data as value of cell.
-If scalar data you use, this method compares like dictionary.
-If object data you use, you have to make orignal class and implement compare_to method.
+    my $list = new Data::CircularList;
+    my $iter = $list->iterator;
+    while ($iter->has_next) {
+       print $iter->next->data . "\n";
+    }
 
 =cut
 
-sub compare_to {
+sub next {
     my $self = shift;
-    my $cell = shift;
 
-    # some object case
-    if (blessed($self->data) && blessed($cell->data)) {
-        # you have to implement compare_to method in your obj
-        if (!$cell->can('compare_to')) {
-            croak "You have to implement compare_to method in your object(" . ref($cell) . ").\n";
-        }
-        return $cell->compare_to($self->data) > 0 ? 1 : 0;
+    if ( ! defined($self->p->next) ) {
+        return undef;
     }
 
-    if (looks_like_number($self->data) && looks_like_number($cell->data)) {
-        # number case
-        return $self->data > $cell->data ? 1 : 0;
+    if ( ! blessed($self->p->next->data) ) {
+        # skip header
+        $self->p($self->p->next->next);
     } else {
-        # string case
-        return $self->data gt $cell->data ? 1 : 0;
+        $self->p($self->p->next);
     }
-
-    # other case (havn't implemented)
-    return 1;
+    return $self->p->data;
 }
 
 =head1 AUTHOR
@@ -107,7 +112,7 @@ shinchit, C<< <shinchi.xx at gmail.com> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-datastructure-circularlist at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=DataStructure-CircularList>.  I will be notified, and then you'll
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-CircularList>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -117,7 +122,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc DataStructure::CircularList::Cell
+    perldoc Data::CircularList::Iterator
 
 
 You can also look for information at:
@@ -126,19 +131,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=DataStructure-CircularList>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Data-CircularList>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/DataStructure-CircularList>
+L<http://annocpan.org/dist/Data-CircularList>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/DataStructure-CircularList>
+L<http://cpanratings.perl.org/d/Data-CircularList>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/DataStructure-CircularList/>
+L<http://search.cpan.org/dist/Data-CircularList/>
 
 =back
 
@@ -189,4 +194,4 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
-1; # End of DataStructure::CircularList::Cell
+1; # End of Data::CircularList::Iterator
