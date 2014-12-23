@@ -14,11 +14,11 @@ Data::LinkedList - simple implementation for using LinkedList data structure.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 =head1 SYNOPSIS
@@ -71,6 +71,7 @@ Perhaps a little code snippet.
     ...
 
     # you can also use some object as cells
+    use Person;
     $list = new Data::LinkedList;
     $list->insert(new Person(name => 'lally'));
     $list->insert(new Person(name => 'hisashi'));
@@ -85,10 +86,13 @@ Perhaps a little code snippet.
     __PACKAGE__->mk_accessors(qw/length/);
     ...
     sub new {
-        my ($class, %self) = @_;
-        $self{'length'} = length($self{'name'});
-        bless \%self => $class;
-        return \%self;
+        my $class = shift;
+        my %args = @_;
+        my $self = {};
+        bless $self => $class;
+
+        $self->length(length($args{'name'});
+        return $self;
     }
     ...
     # sort by name's length
@@ -136,8 +140,8 @@ sub insert {
 
     my $p = $self->header->next;
     my $q = $self->header;
-
-    while (defined($p) && $cell->compare_to($p->data) > 0) {
+ 
+    while (defined($p) && $p->can('data') && $cell->compare_to($p->data) > 0) {
         $q = $p;
         $p = $p->next;
     }

@@ -22,4 +22,4 @@ requires:
   Class::Accessor: 0.34
   Scalar::Util: 1.23
   perl: 5.006
-version: 0.03
+version: 0.04

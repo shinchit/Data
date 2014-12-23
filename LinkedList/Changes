@@ -1,5 +1,9 @@
 Revision history for Data-LinkedList
 
+0.04    2014-12-23/08:30
+        change namespace from DataStructure to Data.
+        modify SYNOPSYS.
+        excludde *.old files in tar ball.
 0.03    2014-12-12/22:32
         error occurred by comparing undef with a number is fixed.
         add explain Build.PL and Makefile.PL about depending relation of the modules.

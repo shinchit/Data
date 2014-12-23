@@ -14,11 +14,11 @@ Data::LinkedList::Cell - a Cell of the LinkedList.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -89,7 +89,7 @@ sub compare_to {
         return $cell->compare_to($self->data) > 0 ? 1 : 0;
     }
 
-    if (looks_like_number($self->data)) {
+    if (looks_like_number($self->data) && looks_like_number($cell->data)) {
         # number case
         return $self->data > $cell->data ? 1 : 0;
     } else {
