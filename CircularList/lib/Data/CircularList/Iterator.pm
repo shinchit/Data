@@ -6,6 +6,8 @@ use warnings FATAL => 'all';
 use parent qw/Class::Accessor/;
 __PACKAGE__->mk_accessors(qw/p header rotate rotate_count/);
 use Scalar::Util qw/blessed/;
+use Carp;
+sub DEBUG() {0}; # {0} when done
 
 =head1 NAME
 
@@ -81,7 +83,7 @@ return next cell(Data::CircularList::Cell) of the CircularList.
 If next method called, iterator progresses next cell.
 So you should generally call has_next method and next method alternately each once respectively.
 
-    my $list = new Data::CircularList;
+    my $list = Data::CircularList->new;
     my $iter = $list->iterator;
     while ($iter->has_next) {
        print $iter->next->data . "\n";
@@ -103,6 +105,22 @@ sub next {
         $self->p($self->p->next);
     }
     return $self->p->data;
+}
+
+=head2 DESTROY
+
+destructor.
+Don't you need to use this method directory.
+
+=cut
+
+sub DESTROY {
+    my $self = shift;
+    delete $self->{'header'};
+    delete $self->{'p'};
+    if (DEBUG) {
+        carp "destroying $self\n";
+    }
 }
 
 =head1 AUTHOR

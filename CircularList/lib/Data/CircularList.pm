@@ -8,6 +8,8 @@ use Data::CircularList::Iterator;
 use parent qw/Class::Accessor/;
 __PACKAGE__->mk_accessors(qw/header/);
 use Scalar::Util qw/blessed/;
+use Carp;
+sub DEBUG() {0}; # {0} when done
 
 =head1 NAME
 
@@ -30,7 +32,7 @@ Perhaps a little code snippet.
 
     use Data::CircularList;
 
-    my $list = new Data::CircularList;
+    my $list = Data::CircularList->new;
     $list->insert(20);
     $list->insert(15);
     $list->insert(18);
@@ -70,7 +72,7 @@ Perhaps a little code snippet.
     # 37 <= end. $iter->has_next return true until second rotation completed.
     
     # you can also use strings as cells
-    $list = new Data::CircularList;
+    $list = Data::CircularList->new;
     $list->insert('steeve');
     $list->insert('hisashi');
     $list->insert('takairo');
@@ -110,12 +112,12 @@ Perhaps a little code snippet.
     # steeve <= end. $iter->has_next return true until second rotation completed.
 
     # you can also use some object as cells
-    $list = new Data::CircularList;
-    $list->insert(new Person(name => 'lally'));
-    $list->insert(new Person(name => 'hisashi'));
-    $list->insert(new Person(name => 'takairo'));
-    $list->insert(new Person(name => 'kazuyo'));
-    $list->insert(new Person(name => 'jane'));
+    $list = Data::CircularList->new;
+    $list->insert(Person->new(name => 'lally'));
+    $list->insert(Person->new(name => 'hisashi'));
+    $list->insert(Person->new(name => 'takairo'));
+    $list->insert(Person->new(name => 'kazuyo'));
+    $list->insert(Person->new(name => 'jane'));
     
     # you have to implements compare_to method in you object.
     # you have to write sort logic in compare_to method.
@@ -147,11 +149,12 @@ constructor. Any arguments don't require.
 =cut
 
 sub new {
-    my ($class, %self) = @_;
-    $self{'header'} = new Data::CircularList::Cell("!!Circular List Header!");
-    $self{'header'}->next($self{'header'});
-    bless \%self => $class;
-    return \%self;
+    my $class = shift;
+    my $self = {};
+    $self->{'header'} = Data::CircularList::Cell->new("!!Circular List Header!"),
+    $self->{'header'}->next($self->{'header'}),
+    bless $self => $class;
+    return $self;
 }
 
 =head2 insert($cell)
@@ -163,7 +166,8 @@ You can see SYNOPSIS as a example.
 
 sub insert {
     my $self = shift;
-    my $cell = new Data::CircularList::Cell(shift);
+
+    my $cell = Data::CircularList::Cell->new(shift),
 
     my $p = $self->header->next;
     my $q = $self->header;
@@ -176,7 +180,7 @@ sub insert {
         }
     }
 
-    my $new_cell = new Data::CircularList::Cell($cell);
+    my $new_cell = Data::CircularList::Cell->new($cell);
     $new_cell->next($p);
     $q->next($new_cell);
 }
@@ -194,6 +198,21 @@ sub iterator {
     my $rotate = defined $args{'rotate'} ? $args{'rotate'} : undef;
     my $iter = Data::CircularList::Iterator->new($self, $rotate);
     return $iter;
+}
+
+=head2 DESTROY
+
+destructor.
+Don't you need to use this method directory.
+
+=cut
+
+sub DESTROY {
+    my $self = shift;
+    delete $self->{'header'};
+    if (DEBUG) {
+        carp "destroying $self\n";
+    }
 }
 
 =head1 AUTHOR

@@ -16,8 +16,9 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     requires => {
-        #'ABC'              => 1.6,
-        #'Foo::Bar::Module' => 5.0401,
+        'Carp' => 1.26,
+        'Class::Accessor' => 0.34,
+        'Scalar::Util' => 1.23,
     },
     add_to_cleanup     => [ 'Data-CircularList-*' ],
     create_makefile_pl => 'traditional',
