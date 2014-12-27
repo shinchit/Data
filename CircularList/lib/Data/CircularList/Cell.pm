@@ -80,7 +80,7 @@ sub compare_to {
     my $cell = shift;
 
     # some object case
-    if (blessed($self->data) && blessed($cell->data)) {
+    if (blessed($self->data)) {
         # you have to implement compare_to method in your obj
         if (!$cell->can('compare_to')) {
             croak "You have to implement compare_to method in your object(" . ref($cell) . ").\n";

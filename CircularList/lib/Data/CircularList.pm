@@ -166,8 +166,8 @@ You can see SYNOPSIS as a example.
 
 sub insert {
     my $self = shift;
-
-    my $cell = Data::CircularList::Cell->new(shift),
+    my $cell = shift;
+    $cell = Data::CircularList::Cell->new($cell);
 
     my $p = $self->header->next;
     my $q = $self->header;
