@@ -107,13 +107,7 @@ sub next {
     return $self->p->data;
 }
 
-=head2 DESTROY
-
-destructor.
-Don't you need to use this method directory.
-
-=cut
-
+# free memory of cicular data
 sub DESTROY {
     my $self = shift;
     delete $self->{'header'};

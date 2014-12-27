@@ -219,13 +219,7 @@ sub iterator {
     return $iter;
 }
 
-=head2 DESTROY
-
-destructor.
-Don't you need to use this method directory.
-
-=cut
-
+# free memory of cicular data
 sub DESTROY {
     my $self = shift;
     delete $self->{'header'};
