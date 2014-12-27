@@ -122,23 +122,42 @@ Perhaps a little code snippet.
     # you have to implements compare_to method in you object.
     # you have to write sort logic in compare_to method.
     package Person;
-    use parent qw/Class::Accessor/;
-    __PACKAGE__->mk_accessors(qw/length/);
-    ...
+
     sub new {
-        my ($class, %self) = @_;
-        $self{'length'} = length($self{'name'});
-        bless \%self => $class;
-        return \%self;
+        my $class = shift;
+        my %args = @_;
+        my $self = {
+            name => $args{'name'},
+            length => length($args{'name'}),
+        };
+        bless $self => $class;
+        $self->length(length($args{'name'}));
+        return $self;
     }
-    ...
-    # sort by name's length
+
+    # sort by length of name, and name
     sub compare_to {
         my $self = shift;
         my $cell = shift;
-        return $self->length > $cell->length ? 1 : 0;
+
+        if ($self->length > $cell->length) {
+            return 1;
+        } elsif ($self->length == $cell->length) {
+            return $self->name gt $cell->name ? 1 : 0;
+        } else {
+            return 0;
+        }
     }
 
+    sub name {
+        my $self = shift;
+        return defined $self->{'name'} ? $self->{'name'} : undef;
+    }
+
+    sub length {
+        my $self = shift;
+        return defined $self->{'length'} ? $self->{'length'} : undef;
+    }
 
 =head1 SUBROUTINES/METHODS
 
