@@ -14,11 +14,11 @@ Data::LinkedList - simple implementation for using LinkedList data structure.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.01
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.01';
 
 
 =head1 SYNOPSIS
@@ -29,7 +29,7 @@ Perhaps a little code snippet.
 
     use Data::LinkedList;
 
-    my $list = new Data::LinkedList;
+    my $list = Data::LinkedList->new;
     $list->insert(20);
     $list->insert(15);
     $list->insert(18);
@@ -50,10 +50,10 @@ Perhaps a little code snippet.
     ...
     
     # you can also use strings as cells
-    $list = new Data::LinkedList;
+    $list = Data::LinkedList->new;
     $list->insert('steeve');
     $list->insert('hisashi');
-    $list->insert('takairo');
+    $list->insert('Takairo');
     $list->insert('kazuyo');
     $list->insert('jane');
     
@@ -63,43 +63,60 @@ Perhaps a little code snippet.
        print $iter->next->data . "\n";
     }
     # you can see result sorted
+    # Takahiro
     # hisashi
     # jane
     # kazuyo
-    # takahiro
     # steeve
     ...
 
     # you can also use some object as cells
     use Person;
-    $list = new Data::LinkedList;
-    $list->insert(new Person(name => 'lally'));
-    $list->insert(new Person(name => 'hisashi'));
-    $list->insert(new Person(name => 'takairo'));
-    $list->insert(new Person(name => 'kazuyo'));
-    $list->insert(new Person(name => 'jane'));
+    $list = Data::LinkedList->new;
+    $list->insert(Person->new(name => 'lally'));
+    $list->insert(Person->new(name => 'hisashi'));
+    $list->insert(Person->new(name => 'Takairo'));
+    $list->insert(Person->new(name => 'kazuyo'));
+    $list->insert(Person->new(name => 'jane'));
     
     # you have to implements compare_to method in you object.
     # you have to write sort logic in compare_to method.
     package Person;
-    use parent qw/Class::Accessor/;
-    __PACKAGE__->mk_accessors(qw/length/);
-    ...
+
     sub new {
         my $class = shift;
         my %args = @_;
-        my $self = {};
+        my $self = {
+            name => $args{'name'},
+            length => length($args{'name'}),
+        };
         bless $self => $class;
-
-        $self->length(length($args{'name'});
+        $self->length(length($args{'name'}));
         return $self;
     }
-    ...
-    # sort by name's length
+
+    # sort by length of name, and name
     sub compare_to {
         my $self = shift;
         my $cell = shift;
-        return $self->length > $cell->length ? 1 : 0;
+
+        if ($self->length > $cell->length) {
+            return 1;
+        } elsif ($self->length == $cell->length) {
+            return $self->name gt $cell->name ? 1 : 0;
+        } else {
+            return 0;
+        }
+    }
+
+    sub name {
+        my $self = shift;
+        return defined $self->{'name'} ? $self->{'name'} : undef;
+    }
+
+    sub length {
+        my $self = shift;
+        return defined $self->{'length'} ? $self->{'length'} : undef;
     }
 
 =head1 DESCRIPTION
@@ -108,6 +125,11 @@ This module is simple implementation for using LinkedList data structure.
 The cells inserted this LinkedList is sorted by value automatically.
 If you want to sort by original logic, you have to make orignal class and implement compare_to method.
 You can see SYNOPOSIS as a example;
+
+=head2 FEATURES
+
+- simple interface. The function is very little and how to use is easy to understand.
+- You can use Orignal Object for a cell of LinkedList and implement Orignal sort logic by implementing compare_to method.
 
 =cut
 
@@ -121,7 +143,7 @@ constructor. Any arguments don't require.
 
 sub new {
     my ($class, %self) = @_;
-    $self{'header'} = new Data::LinkedList::Cell("!!List Header!");
+    $self{'header'} = Data::LinkedList::Cell->new("!!List Header!");
     bless \%self => $class;
     return \%self;
 }
@@ -136,7 +158,7 @@ You can see SYNOPSIS as a example.
 
 sub insert {
     my $self = shift;
-    my $cell = new Data::LinkedList::Cell(shift);
+    my $cell = Data::LinkedList::Cell->new(shift);
 
     my $p = $self->header->next;
     my $q = $self->header;
@@ -146,7 +168,7 @@ sub insert {
         $p = $p->next;
     }
 
-    my $new_cell = new Data::LinkedList::Cell($cell);
+    my $new_cell = Data::LinkedList::Cell->new($cell);
     $new_cell->next($p);
     $q->next($new_cell);
 }
@@ -175,8 +197,9 @@ Please report any bugs or feature requests to C<bug-datastructure-linkedlist at 
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-LinkedList>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
+=head1 SEE ALSO
 
-
+L<LinkedList-Single>
 
 =head1 SUPPORT
 

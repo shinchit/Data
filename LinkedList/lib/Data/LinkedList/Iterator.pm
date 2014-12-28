@@ -12,11 +12,11 @@ Data::LinkedList::Iterator - iterator for Data::LinkedList's object.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.01
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
@@ -49,7 +49,7 @@ If the linkedList has not next cell, this method return 0.
 
 sub has_next {
     my $self = shift;
-    return defined $self->p->next;
+    return defined $self->p->next ? 1 : 0;
 }
 
 =head2 next
@@ -61,7 +61,7 @@ return next cell(Data::LinkedList::Cell) of the LinkedList.
 If next method called, iterator progresses next cell.
 So you should generally call has_next method and next method alternately each once respectively.
 
-    my $list = new Data::LinkedList;
+    my $list = Data::LinkedList->new;
     my $iter = $list->iterator;
     while ($iter->has_next) {
        print $iter->next->data . "\n";

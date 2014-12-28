@@ -14,11 +14,11 @@ Data::LinkedList::Cell - a Cell of the LinkedList.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.01
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
