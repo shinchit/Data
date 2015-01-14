@@ -88,8 +88,8 @@ Perhaps a little code snippet.
     # hisashi
     # jane
     # kazuyo
-    # takahiro
     # steeve
+    # takahiro
     # hisashi  <= 1st value is displayed
     # jane        eternal loop
     ...
@@ -103,13 +103,13 @@ Perhaps a little code snippet.
     # hisashi
     # jane
     # kazuyo
-    # takahiro
     # steeve
+    # takahiro
     # hisashi
     # jane
     # kazuyo
-    # takahiro
-    # steeve <= end. $iter->has_next return true until second rotation completed.
+    # steeve
+    # takahiro <= end. $iter->has_next return true until second rotation completed.
 
     # you can also use some object as cells
     $list = Data::CircularList->new;
